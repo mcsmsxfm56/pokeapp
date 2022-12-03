@@ -1,10 +1,8 @@
 ![HenryLogo](https://d31uz8lwfmyn8g.cloudfront.net/Assets/logo-henry-white-lg.png)
 
-# Individual Project - Henry Videogames
+# Individual Project - Henry Pokemon
 
-<p align="right">
-  <img height="200" src="./videogame.png" />
-</p>
+<img height="150" src="./pokemon.png" />
 
 ## Objetivos del Proyecto
 
@@ -67,28 +65,26 @@ DB_HOST=localhost
 
 Reemplazar `usuariodepostgres` y `passwordDePostgres` con tus propias credenciales para conectarte a postgres. Este archivo va ser ignorado en la subida a github, ya que contiene información sensible (las credenciales).
 
-Adicionalmente será necesario que creen desde psql una base de datos llamada `videogames`
+Adicionalmente será necesario que creen desde psql una base de datos llamada `pokemon`
 
 El contenido de `client` fue creado usando: Create React App.
 
 ## Enunciado
 
-La idea general es crear una aplicación en la cual se puedan ver los distintos videojuegos disponibles junto con información relevante de los mismos utilizando la api externa [rawg](https://rawg.io/apidocs) y a partir de ella poder, entre otras cosas:
+La idea general es crear una aplicación en la cual se puedan ver los distintos Pokemon utilizando la api externa [pokeapi](https://pokeapi.co/) y a partir de ella poder, entre otras cosas:
 
-- Buscar videjuegos
+- Buscar pokemons
 - Filtrarlos / Ordenarlos
-- Agregar nuevos videojuegos
-
-__IMPORTANTE__: Para poder utilizar esta API externa es necesario crearse una cuenta para obtener una API Key que luego debera ser incluida en todos los request que hagamos a rawg simplemente agregando `?key={YOUR_API_KEY}` al final de cada endpoint. Agregar la clave en el archivo `.env` para que la misma no se suba al repositorio por cuestiones de seguridad y utilizarla desde allí.
+- Crear nuevos pokemons
 
 __IMPORTANTE__: Para las funcionalidades de filtrado y ordenamiento NO pueden utilizar los endpoints de la API externa que ya devuelven los resultados filtrados u ordenados sino que deben realizarlo ustedes mismos. En particular alguno de los ordenamientos o filtrados debe si o si realizarse desde el frontend.
 
 ### Únicos Endpoints/Flags que pueden utilizar
 
-- GET <https://api.rawg.io/api/games>
-- GET <https://api.rawg.io/api/games?search={game}>
-- GET <https://api.rawg.io/api/genres>
-- GET <https://api.rawg.io/api/games/{id}>
+- GET <https://pokeapi.co/api/v2/pokemon>
+- GET <https://pokeapi.co/api/v2/pokemon/{id}>
+- GET <https://pokeapi.co/api/v2/pokemon/{name}>
+- GET <https://pokeapi.co/api/v2/type>
 
 ### Requerimientos mínimos
 
@@ -114,56 +110,52 @@ __Pagina inicial__: deben armar una landing page con
 
 __Ruta principal__: debe contener
 
-- [ ] Input de búsqueda para encontrar videojuegos por nombre
-- [ ] Área donde se verá el listado de videojuegos. Deberá mostrar su:
+- [ ] Input de búsqueda para encontrar pokemons por nombre (La búsqueda será exacta, es decir solo encontrará al pokemon si se coloca el nombre completo)
+- [ ] Área donde se verá el listado de pokemons. Al iniciar deberá cargar los primeros resultados obtenidos desde la ruta `GET /pokemons` y deberá mostrar su:
   - Imagen
   - Nombre
-  - Géneros
-- [ ] Botones/Opciones para filtrar por género y por videojuego existente o agregado por nosotros
-- [ ] Botones/Opciones para ordenar tanto ascendentemente como descendentemente los videojuegos por orden alfabético y por rating
-- [ ] Paginado para ir buscando y mostrando los siguientes videojuegos, 15 juegos por pagina, mostrando los primeros 15 en la primer pagina.
+  - Tipos (Electrico, Fuego, Agua, etc)
+- [ ] Botones/Opciones para filtrar por tipo de pokemon y por pokemon existente o creado por nosotros
+- [ ] Botones/Opciones para ordenar tanto ascendentemente como descendentemente los pokemons por orden alfabético y por ataque
+- [ ] Paginado para ir buscando y mostrando los siguientes pokemons, 12 pokemons por pagina.
 
-__IMPORTANTE__: Dentro de la Ruta Principal se deben mostrar tanto los videjuegos traidos desde la API como así también los de la base de datos. Debido a que en la API existen alrededor de 500 mil juegos, por cuestiones de performance pueden tomar la simplificación de obtener y paginar los primeras 100.
+__IMPORTANTE__: Dentro de la Ruta Principal se deben mostrar tanto los pokemons traidos desde la API como así también las de la base de datos. Por otro lado, si revisan el endpoint que trae todos los pokemons verán que no muestra la información del pokemon sino una URL para hacer un subrequest y obtener los datos de allí. Tendrán que por cada pokemon que van a mostrar hacer otro request a esa URL para obtener su imagen y tipos. Debido a que esto puede hacer que la búsqueda sea muy lenta limitar el resultado total a 40 pokemons totales.
 
-__Ruta de detalle de videojuego__: debe contener
+__Ruta de detalle de Pokemon__: debe contener
 
-- [ ] Los campos mostrados en la ruta principal para cada videojuegos (imagen, nombre, y géneros)
-- [ ] Descripción
-- [ ] Fecha de lanzamiento
-- [ ] Rating
-- [ ] Plataformas
+- [ ] Los campos mostrados en la ruta principal para cada pokemon (imagen, nombre y tipos)
+- [ ] Número de Pokemon (id)
+- [ ] Estadísticas (vida, ataque, defensa, velocidad)
+- [ ] Altura y peso
 
-__Ruta de creación de videojuegos__: debe contener
+__Ruta de creación__: debe contener
 
-- [ ] Un formulario __controlado con JavaScript__ con los siguientes campos:
-  - Nombre
-  - Descripción
-  - Fecha de lanzamiento
-  - Rating
-- [ ] Posibilidad de seleccionar/agregar varios géneros
-- [ ] Posibilidad de seleccionar/agregar varias plataformas
-- [ ] Botón/Opción para crear un nuevo videojuego
+- [ ] Un formulario __controlado con JavaScript__ con los campos mencionados en el detalle del Pokemon
+- [ ] Posibilidad de seleccionar/agregar más de un tipo de Pokemon
+- [ ] Botón/Opción para crear un nuevo Pokemon
 
-> Es requisito que el formulario de creación esté validado con JavaScript y no sólo con validaciones HTML. Pueden agregar las validaciones que consideren. Por ejemplo: Que el nombre del juego no pueda contener algunos símbolos, que el rating no pueda exceder determinado valor, etc.
+> Es requisito que el formulario de creación esté validado con JavaScript y no sólo con validaciones HTML. Pueden agregar las validaciones que consideren. Por ejemplo: Que el nombre del Pokemon no pueda contener caracteres numéricos, que la altura no pueda ser superior a determinado valor, etc.
 
 ## Base de datos
 
 El modelo de la base de datos deberá tener las siguientes entidades (Aquellas propiedades marcadas con asterísco deben ser obligatorias):
 
-- [ ] Videojuego con las siguientes propiedades:
-  - ID: * No puede ser un ID de un videojuego ya existente en la API rawg
+- [ ] Pokemon con las siguientes propiedades:
+  - ID (Número de Pokemon) * : No puede ser un ID de un pokemon ya existente en la API pokeapi
   - Nombre *
-  - Descripción *
-  - Fecha de lanzamiento
-  - Rating
-  - Plataformas *
-- [ ] Genero con las siguientes propiedades:
+  - Vida
+  - Ataque
+  - Defensa
+  - Velocidad
+  - Altura
+  - Peso
+- [ ] Tipo con las siguientes propiedades:
   - ID
   - Nombre
 
-La relación entre ambas entidades debe ser de muchos a muchos ya que un videojuego puede pertenecer a varios géneros en simultaneo y, a su vez, un género puede contener múltiples videojuegos distintos. Un ejemplo sería el juego `Counter Strike` pertenece a los géneros Shooter y Action al mismo tiempo. Pero a su vez existen otros videojuegos considerados como Shooter o como Action.
+La relación entre ambas entidades debe ser de muchos a muchos ya que un pokemon puede pertenecer a más de un tipo y, a su vez, un tipo puede incluir a muchos pokemons.
 
-__IMPORTANTE__: Pensar como modelar los IDs de los videojuegos en la base de datos. Existen distintas formas correctas de hacerlo pero tener en cuenta que cuando hagamos click en algun videojuego, este puede provenir de la API o de la Base de Datos por lo que cuando muestre su detalle no debería haber ambigüedad en cual se debería mostrar. Por ejemplo si en la API el videojuego `Age of Empires II: Age of Kings` tiene id = 1 y en nuestra base de datos creamos un nuevo videojuego `Age of Henry` con id = 1, ver la forma de diferenciarlos cuando querramos acceder al detalle del mismo.
+__IMPORTANTE__: Pensar como modelar los IDs de los pokemons en la base de datos. Existen distintas formas correctas de hacerlo pero tener en cuenta que cuando hagamos click en alguno, este puede provenir de la API o de la Base de Datos por lo que cuando muestre su detalle no debería haber ambigüedad en cual se debería mostrar. Por ejemplo si en la API el pokemon `Bulbasaur` tiene id = 1 y en nuestra base de datos creamos un nuevo pokemon `Henry` con id = 1, ver la forma de diferenciarlos cuando querramos acceder al detalle del mismo.
 
 ## Backend
 
@@ -171,22 +163,22 @@ Se debe desarrollar un servidor en Node/Express con las siguientes rutas:
 
 __IMPORTANTE__: No está permitido utilizar los filtrados, ordenamientos y paginados brindados por la API externa, todas estas funcionalidades tienen que implementarlas ustedes.
 
-- [ ] __GET /videogames__:
-  - Obtener un listado de los videojuegos
+- [ ] __GET /pokemons__:
+  - Obtener un listado de los pokemons desde pokeapi.
   - Debe devolver solo los datos necesarios para la ruta principal
-- [ ] __GET /videogames?name="..."__:
-  - Obtener un listado de las primeros 15 videojuegos que contengan la palabra ingresada como query parameter
-  - Si no existe ningún videojuego mostrar un mensaje adecuado
-- [ ] __GET /videogame/{idVideogame}__:
-  - Obtener el detalle de un videojuego en particular
-  - Debe traer solo los datos pedidos en la ruta de detalle de videojuego
-  - Incluir los géneros asociados
-- [ ] __POST /videogames__:
-  - Recibe los datos recolectados desde el formulario controlado de la ruta de creación de videojuego por body
-  - Crea un videojuego en la base de datos, relacionado a sus géneros.
-- [ ] __GET /genres__:
-  - Obtener todos los tipos de géneros de videojuegos posibles
-  - En una primera instancia deberán traerlos desde rawg y guardarlos en su propia base de datos y luego ya utilizarlos desde allí
+- [ ] __GET /pokemons/{idPokemon}__:
+  - Obtener el detalle de un pokemon en particular
+  - Debe traer solo los datos pedidos en la ruta de detalle de pokemon
+  - Tener en cuenta que tiene que funcionar tanto para un id de un pokemon existente en pokeapi o uno creado por ustedes
+- [ ] __GET /pokemons?name="..."__:
+  - Obtener el pokemon que coincida exactamente con el nombre pasado como query parameter (Puede ser de pokeapi o creado por nosotros)
+  - Si no existe ningún pokemon mostrar un mensaje adecuado
+- [ ] __POST /pokemons__:
+  - Recibe los datos recolectados desde el formulario controlado de la ruta de creación de pokemons por body
+  - Crea un pokemon en la base de datos relacionado con sus tipos.
+- [ ] __GET /types__:
+  - Obtener todos los tipos de pokemons posibles
+  - En una primera instancia deberán traerlos desde pokeapi y guardarlos en su propia base de datos y luego ya utilizarlos desde allí
 
 ## Testing
 
