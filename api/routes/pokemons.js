@@ -12,9 +12,31 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
     let { id } = req.params
-    res.status(200).send(`GET /pokemons/${id} status 200`)
+    try {
+        let bdSearch = await Pokemon.findOne({ where: { id } })
+        res.status(200).send(bdSearch)
+    } catch {
+        try {
+            let apiRequest = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`)
+            let poke = {
+                image: apiRequest.data.sprites.front_default,
+                name: apiRequest.data.name,
+                types: apiRequest.data.types.map(obj => obj.type.name),
+                id: apiRequest.data.id,
+                hp: apiRequest.data.stats[0].base_stat,
+                attack: apiRequest.data.stats[1].base_stat,
+                defense: apiRequest.data.stats[2].base_stat,
+                speed: apiRequest.data.stats[5].base_stat,
+                height: apiRequest.data.height,
+                weight: apiRequest.data.weight
+            }
+            res.status(200).send(poke)
+        } catch(error){
+            res.status(404).send(error.message)
+        }
+    }
 })
 
 router.post('/', async (req, res) => {
